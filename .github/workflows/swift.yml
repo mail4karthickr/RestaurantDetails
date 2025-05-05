@@ -16,7 +16,7 @@ jobs:
 
       # Step 2: Set up Swift
       - name: Set up Swift
-        uses: fwal/setup-swift@v1 # Use a maintained Swift setup action
+        uses: actions/setup-swift@v3
         with:
           swift-version: '5.8'
 
