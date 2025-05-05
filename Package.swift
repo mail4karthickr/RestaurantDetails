@@ -19,8 +19,7 @@ let package = Package(
                name: "RestaurantDetails"),
            .testTarget(
                name: "RestaurantDetailsTests",
-               dependencies: ["RestaurantDetails"],
-               path: "Tests"
+               dependencies: ["RestaurantDetails"]
            ),
     ]
 )// swift-tools-version: 6.1
