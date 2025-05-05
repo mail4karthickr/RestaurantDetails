@@ -47,7 +47,39 @@ jobs:
                   run: xcodebuild -scheme RestaurantDetails -destination 'platform=iOS Simulator,name=iPhone 14' build
           
                 # Step 5: Run tests
-                - name: Run tests
+                - name: Run tests                name: CI for RestaurantDetails Package
+                
+                on:
+                  pull_request:
+                    branches:
+                      - main
+                
+                jobs:
+                  build-and-test:
+                    runs-on: macos-latest # Use macOS runner for xcodebuild
+                
+                    steps:
+                      # Step 1: Checkout the code¯
+                      - name: Checkout code
+                        uses: actions/checkout@v3
+                
+                      # Step 2: Set up Swift
+                      - name: Set up Swift
+                        uses: actions/setup-swift@v2
+                        with:
+                          swift-version: '5.8'
+                
+                      # Step 3: Resolve dependencies
+                      - name: Resolve dependencies
+                        run: swift package resolve
+                
+                      # Step 4: Build the package
+                      - name: Build the package
+                        run: xcodebuild -scheme RestaurantDetails -destination 'platform=iOS Simulator,name=iPhone 14' build
+                
+                      # Step 5: Run tests
+                      - name: Run tests
+                        run: xcodebuild -scheme RestaurantDetailsTests -destination 'platform=iOS Simulator,name=iPhone 14' test
                   run: xcodebuild -scheme RestaurantDetailsTests -destination 'platform=iOS Simulator,name=iPhone 14' test Use the appropriate Swift version for your project
 
       # Step 3: Build the package
