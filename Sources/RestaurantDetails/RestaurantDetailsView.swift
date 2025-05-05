@@ -12,7 +12,7 @@ public struct RestaurantDetailsView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
-            Text("Name: Gourmet Paradise")
+            Text("Name: Gourmet Paradise title")
                 .font(.headline)
 
             Text("Cuisine: Italian")
