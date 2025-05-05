@@ -8,7 +8,7 @@ public struct RestaurantDetailsView: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Restaurant Details updated")
+            Text("Restaurant Details updated name")
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
