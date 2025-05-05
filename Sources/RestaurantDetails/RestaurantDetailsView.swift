@@ -3,6 +3,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 public struct RestaurantDetailsView: View {
     public init() {}
 
