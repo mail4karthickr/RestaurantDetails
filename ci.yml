@@ -1,0 +1,29 @@
+name: CI for Checkout Package
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Swift
+      - name: Set up Swift
+        uses: actions/setup-swift@v2
+        with:
+          swift-version: '5.8' # Use the appropriate Swift version for your project
+
+      # Step 3: Build the package
+      - name: Build the package
+        run: swift build --build-tests
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: swift test
