@@ -1,4 +1,4 @@
-name: CI for Checkout Package
+name: CI for RestaurantDetails Package
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: macos-latest
+    runs-on: macos-latest # Use macOS runner for xcodebuild
 
     steps:
       # Step 1: Checkout the code
@@ -18,244 +18,16 @@ jobs:
       - name: Set up Swift
         uses: actions/setup-swift@v2
         with:
-          swift-version: '5.8' #          name: CI for RestaurantDetails Package
-          
-          on:
-            pull_request:
-              branches:
-                - main
-          
-          jobs:
-            build-and-test:
-              runs-on: macos-latest # Use macOS runner for xcodebuild
-          
-              steps:
-                # Step 1: Checkout the code
-                - name: Checkout code
-                  uses: actions/checkout@v3
-          
-                # Step 2: Set up Xcode
-                - name: Set up Xcode
-                  run: sudo xcode-select -switch /Applications/Xcode.app
-          
-                # Step 3: Resolve dependencies
-                - name: Resolve dependencies
-                  run: swift package resolve
-          
-                # Step 4: Build the package
-                - name: Build the package
-                  run: xcodebuild -scheme RestaurantDetails -destination 'platform=iOS Simulator,name=iPhone 14' build
-          
-                # Step 5: Run tests
-                - name: Run tests                name: CI for RestaurantDetails Package
-                
-                on:
-                  pull_request:
-                    branches:
-                      - main
-                
-                jobs:
-                  build-and-test:
-                    runs-on: macos-latest # Use macOS runner for xcodebuild
-                
-                    steps:
-                      # Step 1: Checkout the code¯
-                      - name: Checkout code
-                        uses: actions/checkout@v3
-                
-                      # Step 2: Set up Swift
-                      - name: Set up Swift
-                        uses: actions/setup-swift@v2
-                        with:
-                          swift-version: '5.8'
-                
-                      # Step 3: Resolve dependencies
-                      - name: Resolve dependencies
-                        run: swift package resolve
-                
-                      # Step 4: Build the package
-                      - name: Build the package
-                        run: xcodebuild -scheme RestaurantDetails -destination 'platform=iOS Simulator,name=iPhone 14' build
-                
-                      # Step 5: Run tests
-                      - name: Run tests
-                        run: xcodebuild -scheme RestaurantDetailsTests -destination 'platform=iOS Simulator,name=iPhone 14' test
-                  run: xcodebuild -scheme RestaurantDetailsTests -destination 'platform=iOS Simulator,name=iPhone 14' test Use the appropriate Swift version for your project
+          swift-version: '5.8'
 
-      # Step 3: Build the package
+      # Step 3: Resolve dependencies
+      - name: Resolve dependencies
+        run: swift package resolve
+
+      # Step 4: Build the package
       - name: Build the package
-        run: swift build --build-tests
+        run: xcodebuild -scheme RestaurantDetails -destination 'platform=iOS Simulator,name=iPhone 14' build
 
-      # Step 4: Run tests
+      # Step 5: Run tests
       - name: Run tests
-        run: swift test        name: CI for RestaurantDetails Package
-        
-        on:
-          pull_request:
-            branches:
-              - main
-        
-        jobs:
-          build-and-test:
-            runs-on: ubuntu-latest # Use Linux runner instead of macOS
-        
-            steps:
-              # Step 1: Checkout the code
-              - name: Checkout code
-                uses: actions/checkout@v3
-        
-              # Step 2: Set up Swift
-              - name: Set up Swift
-                uses: actions/setup-swift@v2
-                with:
-                  swift-version: '5.8' # Use the appropriate Swift version for your project
-        
-              # Step 3: Build the package
-              - name: Build the package
-                run: swift build --build-tests
-        
-              # Step 4: Run tests
-              - name: Run tests
-                run: swift test
-name: CI for RestaurantDetails Package
-
-on:
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build-and-test:
-    runs-on: macos-latest
-
-    steps:
-      # Step 1: Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Set up Xcode
-      - name: Set up Xcode
-        run: sudo xcode-select -switch /Applications/Xcode.app
-
-      # Step 3: Resolve dependencies
-      - name: Resolve dependencies
-        run: swift package resolve
-
-      # Step 4: Increment Version
-      - name: Increment Version
-        id: version
-        run: |
-          VERSION_FILE=version.txt
-          if [ ! -f "$VERSION_FILE" ]; then
-            echo "1" > $VERSION_FILE
-          else
-            VERSION=$(cat $VERSION_FILE)
-            VERSION=$((VERSION + 1))
-            echo $VERSION > $VERSION_FILE
-          fi
-          echo "VERSION=$(cat $VERSION_FILE)" >> $GITHUB_ENV
-
-      # Step 5: Build the package
-      - name: Build the package
-        run: xcodebuild -scheme RestaurantDetails -destination 'platform=iOS Simulator,name=iPhone 14' build
-
-      # Step 6: Archive and Generate Framework
-      - name: Archive and Generate Framework
-        run: |
-          xcodebuild archive \
-            -scheme RestaurantDetails \
-            -destination 'generic/platform=iOS' \
-            -archivePath ./build/RestaurantDetails.xcarchive \
-            SKIP_INSTALL=NO \
-            BUILD_LIBRARY_FOR_DISTRIBUTION=YES
-          xcodebuild -create-xcframework \
-            -framework ./build/RestaurantDetails.xcarchive/Products/Library/Frameworks/RestaurantDetails.framework \
-            -output ./build/RestaurantDetails-v$VERSION.xcframework
-
-      # Step 7: Upload Framework
-      - name: Upload Framework
-        uses: actions/upload-artifact@v3
-        with:
-          name: RestaurantDetails.xcframework
-          path: ./build/RestaurantDetails-v*.xcframework
-
-      # Step 8: Commit Updated Version File (Optional)
-      - name: Commit Version File
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add version.txt
-          git commit -m "Increment version to $VERSION"
-          git push
-name: CI for RestaurantDetails Package
-
-on:
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build-and-test:
-    runs-on: macos-latest
-
-    steps:
-      # Step 1: Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Set up Xcode
-      - name: Set up Xcode
-        run: sudo xcode-select -switch /Applications/Xcode.app
-
-      # Step 3: Resolve dependencies
-      - name: Resolve dependencies
-        run: swift package resolve
-
-      # Step 4: Increment Version
-      - name: Increment Version
-        id: version
-        run: |
-          VERSION_FILE=version.txt
-          if [ ! -f "$VERSION_FILE" ]; then
-            echo "1" > $VERSION_FILE
-          else
-            VERSION=$(cat $VERSION_FILE)
-            VERSION=$((VERSION + 1))
-            echo $VERSION > $VERSION_FILE
-          fi
-          echo "VERSION=$(cat $VERSION_FILE)" >> $GITHUB_ENV
-
-      # Step 5: Build the package
-      - name: Build the package
-        run: xcodebuild -scheme RestaurantDetails -destination 'platform=iOS Simulator,name=iPhone 14' build
-
-      # Step 6: Archive and Generate Framework
-      - name: Archive and Generate Framework
-        run: |
-          xcodebuild archive \
-            -scheme RestaurantDetails \
-            -destination 'generic/platform=iOS' \
-            -archivePath ./build/RestaurantDetails.xcarchive \
-            SKIP_INSTALL=NO \
-            BUILD_LIBRARY_FOR_DISTRIBUTION=YES
-          xcodebuild -create-xcframework \
-            -framework ./build/RestaurantDetails.xcarchive/Products/Library/Frameworks/RestaurantDetails.framework \
-            -output ./build/RestaurantDetails-v$VERSION.xcframework
-
-      # Step 7: Upload Framework
-      - name: Upload Framework
-        uses: actions/upload-artifact@v3
-        with:
-          name: RestaurantDetails.xcframework
-          path: ./build/RestaurantDetails-v*.xcframework
-
-      # Step 8: Commit Updated Version File (Optional)
-      - name: Commit Version File
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add version.txt
-          git commit -m "Increment version to $VERSION"
-          git push
+        run: xcodebuild -scheme RestaurantDetailsTests -destination 'platform=iOS Simulator,name=iPhone 14' test
